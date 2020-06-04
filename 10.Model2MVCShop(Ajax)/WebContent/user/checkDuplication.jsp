@@ -8,91 +8,106 @@
 
 <head>
 	<meta charset="EUC-KR">
-	
+
 	<title>아이디 중복 확인</title>
 
 	<link rel="stylesheet" href="/css/admin.css" type="text/css">
 	
-	<!-- CDN(Content Delivery Network) 호스트 사용 -->
 	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript">
-	
+
 		$(function() {
 			
-			$("#userId").focus();
-		
-			//==> keydown Event 연결
-			//==> CallBackFunction  :  EventObject 인자로 받을수 있다.
-			//==> 본실습 에서는
-			//==> - Event Object 를 인자로 받을 수 있는 것 확인.
-			//==> - keyCode 값 alert() 확인하는 것 으로 종료
-			$("#userId").on("keydown" , function(event) {
+			$("userId").focus();
+			
+			$("#userId").on("keydown" , function(event){
 				
-				alert("keyCode  : "+event.keyCode);
+				alert("keyCode	:  "+event.keyCode);
 				
 				if(event.keyCode == '13'){
 					//fncCheckDuplication();
 				}
-			});
-			
-		});
+				
+			});//end on
+		});//end function
+	
 		
-		
-		//==> "중복확인"  Event 처리
 		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.				
-			$("td.ct_btn:contains('중복확인')").on("click" , function() {
+			
+			$("td.ct_btn:contains('중복확인')").on("click" , function(){
 				
 				//==>Debug
 				//alert($("td.ct_btn:contains('중복확인')").html())
 				
 				// Form 유효성 검증
-				if( $("#userId").val() != null && $("#userId").val().length >0) {
+				if(	$("#userId").val()  !=  null &&  $("#userId").val().length >0)	{
 					$("form").attr("method" , "POST");
-				    $("form").attr("action" , "/user/checkDuplication");
-				    $("form").submit();
+					$("form").attr("action" , "/user/checkDuplication");
+					$("form").submit();
 				}else {
-					alert('아이디는 반드시 입력하셔야 합니다.');
-				}
+					alert('아이디는 반드시 입력하셔야 합니다.');	
+				}//end else
 				$("#userId").focus();
-			});
-		});
+			});//end on click
+		});//end function
 		
-		
-		//==>"사용"  Event 처리
 		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			$("td.ct_btn01:contains('사용')").on("click" , function() {
-				
-				//==>Debug
-				//alert($("td.ct_btn01:contains('사용')").html())
-				
-				if(opener) {
+			$("td.ct_btn01:contains('사용')").on("click" , function(){
+			
+				if(opener)	{
 					opener.$("input[name='userId']").val("${userId}");
 					opener.$("input[name='password']").focus();
 				}
+				window.close();
+				
+			});
+		});
+		
+		$(function() {
+			$("td.ct_btn01:contains('닫기')").on("click" , function(){
 				
 				window.close();
-			});
-		});
-		
-		
-		//==> "닫기"  Event  처리
-		$(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			$("td.ct_btn01:contains('닫기')").on("click" , function() {
-				//==>Debug
-				//alert($("td.ct_btn01:contains('닫기')").html())
-				window.close();
-			});
-		});
-
-	</script>		
+			})
+		})
 	
+	
+	
+// 		window.onload = function(){
+// 			document.getElementById("userId").focus();
+// 			document.getElementById("userId").onkeydown = function(){
+// 				if(event.keyCode == '13') {
+// 					fncCheckDuplication();
+// 				}
+// 			}
+// 		}
+		
+// 		function fncCheckDuplication() {
+// 			// Form 유효성 검증
+// 			if(document.detailForm.userId.value != null && document.detailForm.userId.value.length >0) {
+			   	
+// 				///////////////////////////////////////////////////////////////////////////////////////////////
+// 				//document.detailForm.action='/checkDuplication.do';
+// 			    ///////////////////////////////////////////////////////////////////////////////////////////////
+// 			    document.detailForm.action='/user/checkDuplication';
+			    
+// 				document.detailForm.submit();
+				
+// 			}else {
+// 				alert('아이디는 반드시 입력하셔야 합니다.');
+// 			}
+// 			document.getElementById("userId").focus(); 
+// 		}
+		
+// 		function fncUseId() {
+// 			if(opener) {
+// 				opener.document.detailForm.userId.value = "${userId}";
+// 			}
+// 			window.close();
+// 		}
+
+</script>
 </head>
+
 
 <body bgcolor="#ffffff" text="#000000">
 

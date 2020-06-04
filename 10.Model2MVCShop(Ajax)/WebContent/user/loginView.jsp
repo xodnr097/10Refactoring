@@ -1,78 +1,111 @@
 <%@ page contentType="text/html; charset=EUC-KR" %>
 <%@ page pageEncoding="EUC-KR" %>
 
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-
 <!DOCTYPE html>
 <html>
 
 <head>
+	<meta charset="EUC-KR">
+	
+	<title>로그인 화면</title>
+	
+	<link rel="stylesheet" href="/css/admin.css" type="text/css">
+	
+	<!-- CDN(Content Delivery Network) 호스트 사용 -->
+	<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript">
+	   
+		$( function() {
+			
+			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
+			$("#userId").focus();
+			
+			//==>"Login"  Event 연결
+			$("img[src='/images/btn_login.gif']").on("click" , function() {
 
+				var id=$("input:text").val();
+				var pw=$("input:password").val();
+				
+				if(id == null || id.length <1) {
+					alert('ID 를 입력하지 않으셨습니다.');
+					$("input:text").focus();
+					return;
+				}
+				
+				if(pw == null || pw.length <1) {
+					alert('패스워드를 입력하지 않으셨습니다.');
+					$("input:password").focus();
+					return;
+				}
+				
+				////////////////////////////////////////////////// 추가 , 변경된 부분 ////////////////////////////////////////////////////////////
+				//$("form").attr("method","POST").attr("action","/user/login").attr("target","_parent").submit();
+				////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+				$.ajax( 
+						{
+							url : "/user/json/login",
+							method : "POST" ,
+							dataType : "json" ,
+							headers : {
+								"Accept" : "application/json",
+								"Content-Type" : "application/json"
+							},
+							data : JSON.stringify({
+								userId : id,
+								password : pw
+							}),
+							success : function(JSONData , status) {
 
+								//Debug...
+								//alert(status);
+								//alert("JSONData : \n"+JSONData);
+								//alert( "JSON.stringify(JSONData) : \n"+JSON.stringify(JSONData) );
+								//alert( JSONData != null );
+								
+								if( JSONData != null ){
+									//[방법1]
+									//$(window.parent.document.location).attr("href","/index.jsp");
+									
+									//[방법2]
+									//window.parent.document.location.reload();
+									
+									//[방법3]
+									$(window.parent.frames["topFrame"].document.location).attr("href","/layout/top.jsp");
+									$(window.parent.frames["leftFrame"].document.location).attr("href","/layout/left.jsp");
+									$(window.parent.frames["rightFrame"].document.location).attr("href","/user/getUser?userId="+JSONData.userId);
+									
+									//==> 방법 1 , 2 , 3 결과 학인
+								}else{
+									alert("아이디 , 패스워드를 확인하시고 다시 로그인...");
+								}
+							}
+					}); 
+					////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+								
+			});
+		});
+		
+		
+		//============= 회원원가입화면이동 =============
+		$( function() {
+			//==> 추가된부분 : "addUser"  Event 연결
+			$("img[src='/images/btn_add.gif']").on("click" , function() {
+				self.location = "/user/addUser"
+			});
+		});
+		
+	</script>		
+	
 </head>
 		<meta charset="EUC-KR">
-		<title>회원 목록 조회</title>
+		<title>로그인 화면</title>
 		
 		<link rel="stylesheet" href="/css/admin.css" type="text/css">
 		
 		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
 		<script type="text/javascript">
 		
-			function fncGetUserList(currentPage)  {
-				$("#currentPage").val(currentPage)
-				$("form").attr("method", "POST").attr("action" , "/user/listUser").submit();
-			}//end function
 			
-			  $(function() {
-				 
-				  $( "td.ct_btn01:contains('검색')").on("click", function(){
-					  
-				  	fncGetUserList(1);
-				  });
-				  
-				  $( ".ct_list_pop td:nth-child(3)" ).on("click", function(){
-					  
-				  		var userId = $(this).text().trim();
-				  		$.ajax({
-				  					url : "/user/json/getUser/"+userId	,
-				  					method : "GET" ,
-				  					dataType : "json"	,
-				  					headers : {
-				  						"Accept"  :  "application/json",
-				  						"Content-Type"  :  "application/json"
-				  						
-				  					},
-				  					success : function(JSONData , status){
-				  						
-				  						alert(status);
-				  						
-				  						alert("JSONData : \n"+JSONData);
-				  						
-				  						var displayValue = "<h3>"
-				  													+"아이디 : "+JSONData.userId+"<br/>"
-				  													+"이   름 : "+JSONData.userName+"<br/>"
-				  													+"이메일 :  "+JSONData.email+"<br/>"
-				  													+"ROLE : "+JSONData.role+"<br/>"
-				  													+"등록일 : "+JSONData.regDate+"<br/>"
-				  													+"</h3>";
-				  													
-				  						$("h3").remove();
-				  						$(	"#"+userId+"" ).html(displayValue);
-				  					}
-				  					
-				  				});
-				  
-				  });
-				  
-				  $(  ".ct_list_pop td:nth-child(3)"   ).css("color", "red");
-				  $("h7").css("color", "red");
-				  
-				  $(".ct_list_pop : nth-child(4n+6)" ).css("background-color", "whitesmoke");
-			  });
-			
-		
-		
-		
 		</script>
 <body bgcolor="#ffffff" text="#000000" >
 

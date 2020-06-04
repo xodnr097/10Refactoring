@@ -18,23 +18,17 @@
 		
 		//==>"수정" "확인"  Event 연결 및 처리
 		 $(function() {
-			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
-			//==> 1 과 3 방법 조합 : $("tagName.className:filter함수") 사용함.	
-			 $( "td.ct_btn01:contains('확인')" ).on("click" , function() {
-				//Debug..
-				//alert(  $( "td.ct_btn01:contains('확인')" ).html() );
-				history.go(-1);
-			});
 			
-			 $( "td.ct_btn01:contains('수정')" ).on("click" , function() {
-					//Debug..
-					//alert(  $( "td.ct_btn01:contains('수정')" ).html() );
-					self.location = "/user/updateUser?userId=${user.userId}"
-				});
-		});
-		
+			 $( "td.ct_btn01:contains('확인')" ).on("click" , function(){
+				
+				 history.go(-1); 
+			 })
+			 
+			 $(  "td.ct_btn01:contains('수정')" ).on("click" , function() {
+				 self.location = "/user/updateUser?userId=${user.userId}"
+			 });
+		 });
 	</script>
-
 </head>
 
 <body bgcolor="#ffffff" text="#000000">

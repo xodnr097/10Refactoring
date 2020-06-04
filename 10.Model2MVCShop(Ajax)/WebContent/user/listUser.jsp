@@ -17,13 +17,18 @@
 	<script type="text/javascript">
 	
 		// 검색 / page 두가지 경우 모두 Form 전송을 위해 JavaScrpt 이용  
+			
+
+		
 		function fncGetUserList(currentPage) {
 			$("#currentPage").val(currentPage)
 			$("form").attr("method" , "POST").attr("action" , "/user/listUser").submit();
 		}
+		
 
 		//==>"검색" ,  userId link  Event 연결 및 처리
 		 $(function() {
+			 
 			 
 			//==> 검색 Event 연결처리부분
 			//==> DOM Object GET 3가지 방법 ==> 1. $(tagName) : 2.(#id) : 3.$(.className)
@@ -68,6 +73,7 @@
 																+"이메일 : "+JSONData.email+"<br/>"
 																+"ROLE : "+JSONData.role+"<br/>"
 																+"등록일 : "+JSONData.regDate+"<br/>"
+																+"<a href="+"/user/updateUser?userId="+JSONData.userId+">수정</a>"
 																+"</h3>";
 									//Debug...									
 									//alert(displayValue);
@@ -81,7 +87,7 @@
 			
 			//==> userId LINK Event End User 에게 보일수 있도록 
 			$( ".ct_list_pop td:nth-child(3)" ).css("color" , "red");
-			$("h7").css("color" , "red");
+			//$("h7").css("color" , "red");
 			
 			//==> 아래와 같이 정의한 이유는 ??
 			$(".ct_list_pop:nth-child(4n+6)" ).css("background-color" , "whitesmoke");
